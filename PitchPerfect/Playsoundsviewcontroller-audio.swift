@@ -23,7 +23,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         do {
             audioFile = try AVAudioFile(forReading: recordedAudioURL as URL)
         } catch {
-            showAlert(Alerts.AudioFileError, message: String(describing: error))
+            Common().showAlert(Alerts.AudioFileError, message: String(describing: error), in: self)
         }        
     }
     
@@ -91,7 +91,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         do {
             try audioEngine.start()
         } catch {
-            showAlert(Alerts.AudioEngineError, message: String(describing: error))
+            Common().showAlert(Alerts.AudioEngineError, message: String(describing: error), in: self)
             return
         }
         
@@ -151,14 +151,5 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
     }
 
     
-    /// Shows an alert on the current view
-    ///
-    /// - Parameters:
-    ///   - title: Title of the alert view to be presented
-    ///   - message: Message of the alert view to be presented
-    func showAlert(_ title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Alerts.DismissAlert, style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
+    
 }

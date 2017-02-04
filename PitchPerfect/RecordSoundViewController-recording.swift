@@ -18,10 +18,10 @@ extension RecordSoundsViewController: AVAudioRecorderDelegate {
     //MARK: - AVAudioRecorderDelegate methods
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         if flag {
-            performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
+            performSegue(withIdentifier: segueIdentifier, sender: audioRecorder.url)
         }
         else {
-            print("Recording was not successful")
+            Common().showAlert(Alerts.AudioRecordingError, message: Alerts.RecordingFailedMessage, in: self)
         }
     }
     
@@ -82,14 +82,14 @@ extension RecordSoundsViewController: AVAudioRecorderDelegate {
     /// - Parameter button: The button to which the animation would be applied
     func addRecordingIndicatorAnimation (to button: UIButton) {
         DispatchQueue.main.async {
-            let pulseAnimation = CABasicAnimation(keyPath: "opacity")
+            let pulseAnimation = CABasicAnimation(keyPath: Keys.kKeyPathOpacity)
             pulseAnimation.duration = 0.5
             pulseAnimation.fromValue = 0.3
             pulseAnimation.toValue = 1
             pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             pulseAnimation.autoreverses = true
             pulseAnimation.repeatCount = FLT_MAX
-            button.layer.add(pulseAnimation, forKey: "animateOpacity")
+            button.layer.add(pulseAnimation, forKey: Keys.kAnimationOpacity)
         }
     }
 }

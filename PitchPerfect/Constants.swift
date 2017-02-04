@@ -26,3 +26,8 @@ struct Alerts {
     static let AudioFileError = "Audio File Error"
     static let AudioEngineError = "Audio Engine Error"
 }
+
+struct Keys {
+    static let kAnimationOpacity = "animateOpacity"
+    static let kKeyPathOpacity = "opacity"
+}
