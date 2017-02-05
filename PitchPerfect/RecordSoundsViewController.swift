@@ -17,17 +17,18 @@ class RecordSoundsViewController: UIViewController {
     let recordedFileName = "recordedVoice.wav"
     let segueIdentifier = "stopRecording"
     var audioRecorder: AVAudioRecorder!
+    let common = Common()
     
     //MARK: - View lifecycle methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI(.notRecording)
+        common.configureUI(.stopped, sender: self)
     }
     
     //MARK: - Button Events
     @IBAction func recordAudio(_ sender: Any) {
-        configureUI(.recording)
+        common.configureUI(.inProgress, sender: self)
         
         DispatchQueue.global().async {
             self.beginRecording()

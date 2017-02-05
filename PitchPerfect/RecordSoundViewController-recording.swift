@@ -12,25 +12,21 @@ import UIKit
 
 
 extension RecordSoundsViewController: AVAudioRecorderDelegate {
-    
-    enum RecordingState { case recording, notRecording }
-    
+
     //MARK: - AVAudioRecorderDelegate methods
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         if flag {
             performSegue(withIdentifier: segueIdentifier, sender: audioRecorder.url)
         }
         else {
-            Common().showAlert(Alerts.AudioRecordingError, message: Alerts.RecordingFailedMessage, in: self)
+            common.showAlert(Alerts.AudioRecordingError, message: Alerts.RecordingFailedMessage, in: self)
         }
     }
     
     //MARK: - Recording related methods
     
     func stopRecord () {
-        recordingLabel.text = Labels.BeginRecording
-        stopRecordingButton.isEnabled = false
-        recordingButton.isEnabled = true
+        common.configureUI(.stopped, sender: self)
         recordingButton.layer.removeAllAnimations()
         audioRecorder.stop()
         
@@ -58,24 +54,6 @@ extension RecordSoundsViewController: AVAudioRecorderDelegate {
     }
     
     // MARK: - UI Functions
-    
-    
-    /// Configures UI elements based on different states of recording e.g. recording, not recording etc.
-    ///
-    /// - Parameter recordingState: Current state of recording e.g. recording, not recording etc.
-    func configureUI(_ recordingState: RecordingState) {
-        switch(recordingState) {
-        case .recording:
-            recordingButton.isEnabled = false
-            stopRecordingButton.isEnabled = true
-            recordingLabel.text = Labels.RecordingInProgress
-        case .notRecording:
-            recordingButton.isEnabled = true
-            stopRecordingButton.isEnabled = false
-            recordingLabel.text = Labels.BeginRecording
-        }
-    }
-    
     
     /// Adds a pulsing animation which gives a visual indication to the user that recording is in progress
     ///

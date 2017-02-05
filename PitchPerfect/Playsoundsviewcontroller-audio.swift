@@ -12,10 +12,6 @@ import AVFoundation
 
 extension PlaySoundsViewController: AVAudioPlayerDelegate {
     
-    // MARK: PlayingState (raw values correspond to sender tags)
-    
-    enum PlayingState { case playing, notPlaying }
-    
     // MARK: Audio Functions
     
     func setupAudio() {
@@ -23,7 +19,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         do {
             audioFile = try AVAudioFile(forReading: recordedAudioURL as URL)
         } catch {
-            Common().showAlert(Alerts.AudioFileError, message: String(describing: error), in: self)
+            common.showAlert(Alerts.AudioFileError, message: String(describing: error), in: self)
         }        
     }
     
@@ -91,7 +87,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         do {
             try audioEngine.start()
         } catch {
-            Common().showAlert(Alerts.AudioEngineError, message: String(describing: error), in: self)
+            common.showAlert(Alerts.AudioEngineError, message: String(describing: error), in: self)
             return
         }
         
@@ -109,7 +105,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
             stopTimer.invalidate()
         }
         
-        configureUI(.notPlaying)
+        common.configureUI(.stopped, sender: self)
                         
         if let audioEngine = audioEngine {
             audioEngine.stop()
@@ -122,22 +118,6 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
     func connectAudioNodes(_ nodes: AVAudioNode...) {
         for x in 0..<nodes.count-1 {
             audioEngine.connect(nodes[x], to: nodes[x+1], format: audioFile.processingFormat)
-        }
-    }
-    
-    // MARK: UI Functions
-
-    /// Configures the UI Elements based on current playing states
-    ///
-    /// - Parameter playState: Current state of playing e.g. playing or not playing audio
-    func configureUI(_ playState: PlayingState) {
-        switch(playState) {
-        case .playing:
-            setPlayButtonsEnabled(false)
-            stopButton.isEnabled = true
-        case .notPlaying:
-            setPlayButtonsEnabled(true)
-            stopButton.isEnabled = false
         }
     }
     
