@@ -29,27 +29,13 @@ class Common: NSObject {
     /// - Parameter recordingState: Current state of recording e.g. recording, not recording etc.
     func configureUI(_ state: State, sender: UIViewController) {
         if let vc = sender as? RecordSoundsViewController {
-            switch(state) {
-            case .inProgress:
-                vc.recordingButton.isEnabled = false
-                vc.stopRecordingButton.isEnabled = true
-                vc.recordingLabel.text = Labels.RecordingInProgress
-            case .stopped:
-                vc.recordingButton.isEnabled = true
-                vc.stopRecordingButton.isEnabled = false
-                vc.recordingLabel.text = Labels.BeginRecording
-            }
+            vc.recordingButton.isEnabled = state == .stopped
+            vc.stopRecordingButton.isEnabled = state == .inProgress
+            vc.recordingLabel.text = state == .inProgress ? Labels.RecordingInProgress : Labels.BeginRecording
         }
         else if let vc = sender as? PlaySoundsViewController {
-            switch(state) {
-            case .inProgress:
-                vc.setPlayButtonsEnabled(false)
-                vc.stopButton.isEnabled = true
-            case .stopped:
-                vc.setPlayButtonsEnabled(true)
-                vc.stopButton.isEnabled = false
-            }
+            vc.setPlayButtonsEnabled(state == .stopped)
+            vc.stopButton.isEnabled = state == .inProgress
         }
-        
     }
 }
